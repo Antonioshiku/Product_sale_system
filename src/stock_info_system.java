@@ -162,6 +162,7 @@ public class stock_info_system {
 				    itemList.forEach(Item::showItem);
 				    starLine(100,'-');
 				    while(sellItem(sid).equalsIgnoreCase("yes"));
+				    genereatSlip(cName,sid);
 				;break;
 			case 9:
 				System.out.println("Thank You");
