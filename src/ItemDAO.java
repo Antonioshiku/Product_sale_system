@@ -5,6 +5,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 
 public class ItemDAO {
@@ -20,7 +21,7 @@ public class ItemDAO {
 
 	public void close(Connection con, PreparedStatement pst, ResultSet rs) throws SQLException {
 		if (con != null)
-			con.close();
+			Con.close();
 		if (pst != null)
 			pst.close();
 		if (rs != null)
@@ -38,7 +39,7 @@ public class ItemDAO {
 			item.add(new Item(rs.getString(1), rs.getString(2), rs.getString(3), rs.getInt(4), rs.getInt(5),
 					rs.getInt(6)));
 		}
-		close(Con,stmt,rs);
+	
 		return item;
 
 	}
@@ -190,6 +191,48 @@ public class ItemDAO {
   		 close(Con,pst,rs);
   		 return result;
   	}
+	
+	public ArrayList<Item> updatePrice(String ino,int p) throws SQLException{
+	
+		int a=0;
+		ArrayList<Item> item=new ArrayList<Item>();
+		PreparedStatement pst=Con.prepareStatement("update product set price=? where item_no=?");
+		pst.setInt(1, p);
+		pst.setString(2, ino);
+		a=pst.executeUpdate();
+		
+		close(null,pst,null);
+		return item;
+	}
+	
+	
+	public ArrayList<Item> updatePrice_Qty(String ino,int p,int q) throws SQLException{
+	
+		int a=0;
+		int quantity=0;
+		ArrayList<Item> item=new ArrayList<Item>();
+		PreparedStatement pst=Con.prepareStatement("update product set price=? where item_no=?");
+		pst.setInt(1, p);
+		pst.setString(2, ino);
+		pst.executeUpdate();
+ 		  pst=Con.prepareStatement("select Quantity from product where Item_No=?");
+ 		 pst.setString(1, ino);
+ 		 ResultSet rs=pst.executeQuery();
+ 		 while(rs.next()) {
+ 			   quantity=rs.getInt(1);
+ 		 }
+ 		
+ 			  pst=Con.prepareStatement("update product set Quantity=? where Item_No=?");
+ 			  pst.setInt(1, quantity+q);
+ 			  pst.setString(2, ino);
+ 			  pst.executeUpdate();
+ 			
+ 			  
+ 		 
+		
+		close(null,pst,null);
+		return item;
+	}
   	
 
 	

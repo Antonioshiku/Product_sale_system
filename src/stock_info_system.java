@@ -34,7 +34,9 @@ public class stock_info_system {
 		System.out.println(" 6 : Sorting Item Information");
 		System.out.println(" 7 : Delete");
 		System.out.println(" 8 : Selling");
-		System.out.println(" 9  : Exit");
+		System.out.println(" 9  : Update Price");
+		System.out.println(" 10  : Update Product Qty & price");
+		System.out.println(" 11  : Exit");
 		System.out.println(" Choose (1 - 5 )  :");
 
 	}
@@ -165,6 +167,68 @@ public class stock_info_system {
 				    genereatSlip(cName,sid);
 				;break;
 			case 9:
+			String itemNo;
+			int iNo,price =0;
+			SaleDAO sdao=new SaleDAO();
+			itemList=i.showAllItem();
+			starLine(90,'-');
+			item.showItemHeader();
+			starLine(90,'-');
+			itemList.forEach(Item::showItem);
+			starLine(90,'-');
+			System.out.println();
+		
+				do {
+					System.out.println("Select Item No. : ");
+					itemNo = sc.next();
+					iNo = new ItemDAO().checkItemNo(itemNo);
+					if (iNo == 0)
+						System.out.println("Your Item No. does not exists...");
+				} while (iNo == 0);
+					System.out.println("Update price  for " + itemNo + " : ");
+					
+					System.out.println();
+					price=sc.nextInt();
+					i.updatePrice(itemNo, price);
+					itemList=i.showAllItem();
+					starLine(90,'-');
+					item.showItemHeader();;
+					starLine(90,'-');
+					itemList.forEach(Item::showItem);
+					starLine(90,'-');
+			
+				
+				;break;
+			case 10:
+				int addQty,addprice;
+				itemList=i.showAllItem();
+				starLine(90,'-');
+				item.showItemHeader();;
+				starLine(90,'-');
+				itemList.forEach(Item::showItem);
+				starLine(90,'-');
+				System.out.println();
+				do {
+					System.out.println("Select Item No. : ");
+					itemNo = sc.next();
+					iNo = new ItemDAO().checkItemNo(itemNo);
+					if (iNo == 0)
+						System.out.println("Your Item No. does not exists...");
+				} while (iNo == 0);
+					System.out.println("Update Quantity  for " + itemNo + " : ");
+				addQty=sc.nextInt();
+				System.out.println("Update Price  for " + itemNo + " : ");
+				addprice=sc.nextInt();
+				i.updatePrice_Qty(itemNo, addprice, addQty);
+				itemList=i.showAllItem();
+				starLine(90,'-');
+				item.showItemHeader();;
+				starLine(90,'-');
+				itemList.forEach(Item::showItem);
+				starLine(90,'-');
+				
+				;break;
+			case 11:
 				System.out.println("Thank You");
 				break a;
 			default:
@@ -202,7 +266,7 @@ public class stock_info_system {
 			System.out.println("Can't Sell " + itemNo);
 		System.out.print("Continue o not (yes | no)  :");
 		return sc.next();
-	}
+	}	
 	
 	
 	public static void genereatSlip(String cname,int sid) throws IOException, SQLException{
